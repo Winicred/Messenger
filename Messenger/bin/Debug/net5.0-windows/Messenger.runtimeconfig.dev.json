@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\kirya\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\kirya\\.nuget\\packages"
+    ]
+  }
+}

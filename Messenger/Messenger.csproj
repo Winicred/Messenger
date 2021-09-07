@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Update="Properties\UserProperties.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>UserProperties.Designer.cs</LastGenOutput>
+	  </None>
+	  <None Update="Window1.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="MVVM\View\" />
+	  <Folder Include="Themes\Classes" />
+	  <Folder Include="Themes\Styles" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Npgsql" Version="5.0.7" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\UserProperties.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>UserProperties.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Assets\Icons\moon.png" />
+	  <Resource Include="Assets\Icons\moon.png" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,55 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="TextBox" x:Key="SearchBox">
+        <Setter Property="Foreground" Value="Gray" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Margin" Value="8" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border CornerRadius="8" Background="#4e4f52">
+                        <Grid Margin="10 0 15 0">
+                            <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Stretch" x:Name="SearchBox" Background="Transparent"
+                                     TextWrapping="NoWrap" BorderThickness="0" FontSize="13" Foreground="#c9c9c9"
+                                     CaretBrush="Gray" Margin="8 0 0 0"
+                                     Text="{Binding SearchWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding SendCommand}" Key="Return" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+
+                            <Button Content="&#x2715;" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Width="25" Height="25" Foreground="#93969e">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            
+                            <TextBlock IsHitTestVisible="False" Text="Поиск..." VerticalAlignment="Center"
+                                       FontSize="13" HorizontalAlignment="Left" Margin="10 0 0 0" Foreground="#7D7D7D" TextTrimming="WordEllipsis">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
