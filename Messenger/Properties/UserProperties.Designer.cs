@@ -94,5 +94,17 @@ namespace Messenger.Properties {
                 this["WindowPositionY"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long LogginedUserPhoneNumber {
+            get {
+                return ((long)(this["LogginedUserPhoneNumber"]));
+            }
+            set {
+                this["LogginedUserPhoneNumber"] = value;
+            }
+        }
     }
 }

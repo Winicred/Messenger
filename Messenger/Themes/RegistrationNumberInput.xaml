@@ -7,21 +7,23 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border CornerRadius="8" Background="#3e4147">
+                    <Border Background="#fff">
                         <Grid>
-                            <Rectangle Width="100" Height="50" Fill="Blue" Canvas.Left="10" Canvas.Top="25" />
+                            <Rectangle Width="25" Height="20" Fill="Blue" HorizontalAlignment="Left" Margin="8 0 0 0"/>
+                            <Rectangle VerticalAlignment="Stretch" Width="1" Stroke="#c9c9c9"  HorizontalAlignment="Left" Margin="42 8 0 8"/>
                             <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch" x:Name="MessageBox" Background="Transparent"
-                                     TextWrapping="Wrap" BorderThickness="0" FontSize="13" Foreground="#c9c9c9"
-                                     CaretBrush="Gray" Margin="46 0 0 0"
+                                     TextWrapping="Wrap" BorderThickness="0" FontSize="13" Foreground="#7d7d7d"
+                                     CaretBrush="Gray" Margin="50 0 0 0"
                                      Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding SendCommand}" Key="Return" />
                                 </TextBox.InputBindings>
                             </TextBox>
 
-                            <TextBlock IsHitTestVisible="False" Text="Текст..." VerticalAlignment="Center"
-                                       FontSize="13" HorizontalAlignment="Left" Margin="8 0 0 0" Foreground="#7D7D7D">
+                            <TextBlock IsHitTestVisible="False" Text="Номер телефона" VerticalAlignment="Center"
+                                       FontSize="13" HorizontalAlignment="Left" Margin="52 0 0 0" Foreground="#c9c9c9">
+                                
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed" />

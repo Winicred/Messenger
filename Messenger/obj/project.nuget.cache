@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "szT/UpfkzR/CMkQrc4mmEN5U9f9xZwCkG/uMRDPTjgdrcV+WLCKGhzZLmWkjSXszHDy9HmZ3WN2dt5qNKnquCA==",
+  "dgSpecHash": "DkdbEB0+np4+TXTmm/a671xJjdYsC5DFWlH5TxjHbXy457VWL0tmqmlfOM8mwBdNU3i5kgLQacYkqIAgrMrEng==",
   "success": true,
   "projectFilePath": "D:\\Coding\\C#\\Messenger\\Messenger\\Messenger.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kirya\\.nuget\\packages\\npgsql\\5.0.7\\npgsql.5.0.7.nupkg.sha512",
-    "C:\\Users\\kirya\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512"
+    "C:\\Users\\kirya\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512",
+    "C:\\Users\\kirya\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.8\\microsoft.netcore.app.host.win-x64.5.0.8.nupkg.sha512"
   ],
   "logs": []
 }

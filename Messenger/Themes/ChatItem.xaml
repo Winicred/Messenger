@@ -12,7 +12,7 @@
                             </Ellipse.Fill>
                         </Ellipse>
 
-                        <!--<StackPanel Orientation="Vertical" VerticalAlignment="Bottom" x:Name="MesssageBoxTriangleControl">
+                        <!--<StackPanel Orientation="Vertical" VerticalAlignment="Bottom" x:Name="MessageBoxTriangleControl">
                             <Border Width="14" Height="30" Margin="-5 26 0 0" Panel.ZIndex="1" BorderThickness="1"
                                     CornerRadius="10,10,10,8" Background="#232426" />
                             <Polygon Points="8,0 0,8, 8,8" Fill="#eee" Margin="0 -8 0 0" />

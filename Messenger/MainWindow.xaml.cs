@@ -1,23 +1,25 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using Messenger.Core.Utils;
+using Messenger.MVVM.ViewModel;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace Messenger
 {
     public partial class MainWindow
     {
-        public static string WindowTitle = @"Messanger";
+        private static string WindowTitle = @"Messanger";
         public static bool IsFirstLaunched = Properties.UserProperties.Default.IsFirstLaunched;
+        public static long PhoneNumber = Properties.UserProperties.Default.LogginedUserPhoneNumber;
 
         private readonly DatabaseConnection _databaseConnection = new DatabaseConnection();
         private readonly NotifyIconControl _notifyIcon = new NotifyIconControl();
-        
-        
+
         public MainWindow()
         {
             switch (IsFirstLaunched)
@@ -25,7 +27,7 @@ namespace Messenger
                 case true:
                     RegistrationWindow registrationWindow = new RegistrationWindow();
                     registrationWindow.Show();
-                    Visibility = Visibility.Hidden;
+                    Close();
                     break;
                 case false:
                     InitializeComponent();
@@ -33,9 +35,37 @@ namespace Messenger
                     break;
             }
 
-            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-            _notifyIcon.InitializeNotifyIcon();
             _databaseConnection.DbConnection();
+
+            if (Application.Current.MainWindow != null)
+            {
+                if (Application.Current.MainWindow.WindowState != WindowState.Maximized)
+                {
+                    ToMaximizedWindow.Visibility = Visibility.Visible;
+                    ToNormalWindow.Visibility = Visibility.Hidden;
+                    MessageFieldGrid.MinWidth = 250;
+                }
+                else
+                {
+                    ToMaximizedWindow.Visibility = Visibility.Hidden;
+                    ToNormalWindow.Visibility = Visibility.Visible;
+                    MessageFieldGrid.MinWidth = 500;
+                }
+
+                PopupSettingsWindow.Visibility = Visibility.Hidden;
+                PopupSettings.Visibility = Visibility.Hidden;
+
+                SelectedUserData.Margin = new Thickness(0, 0, -250, 0);
+
+                SelectedUserSettings.Visibility = Visibility.Hidden;
+
+                Width = Properties.UserProperties.Default.WindowWidthAfterShutdown;
+                Height = Properties.UserProperties.Default.WindowHeightAfterShutdown;
+                Left = Properties.UserProperties.Default.WindowPositionX;
+                Top = Properties.UserProperties.Default.WindowPositionY;
+
+                _notifyIcon.InitializeNotifyIcon();
+            }
         }
 
         private void BorderMouseDown(object sender, MouseButtonEventArgs eventArgs)
@@ -49,12 +79,28 @@ namespace Messenger
         private void ButtonMinimize_Click(object sender, RoutedEventArgs eventArgs)
         {
             if (Application.Current.MainWindow != null)
+            {
                 Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            }
         }
 
         private void ButtonMaximize_Click(object sender, RoutedEventArgs eventArgs)
         {
-            WindowState = WindowState != WindowState.Maximized ? WindowState.Maximized : WindowState.Normal;
+            switch (WindowState == WindowState.Maximized)
+            {
+                case true:
+                    WindowState = WindowState.Normal;
+                    ToNormalWindow.Visibility = Visibility.Hidden;
+                    ToMaximizedWindow.Visibility = Visibility.Visible;
+                    MessageFieldGrid.MinWidth = 250;
+                    break;
+                case false:
+                    WindowState = WindowState.Maximized;
+                    ToNormalWindow.Visibility = Visibility.Visible;
+                    ToMaximizedWindow.Visibility = Visibility.Hidden;
+                    MessageFieldGrid.MinWidth = 500;
+                    break;
+            }
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs eventArgs)
@@ -69,6 +115,7 @@ namespace Messenger
             RegistrationWindow registrationWindow = new RegistrationWindow();
             registrationWindow.Show();
             IsFirstLaunched = true;
+            PhoneNumber = 0;
             PropertiesSettings.SavePropertiesSettings();
             Close();
         }
@@ -89,6 +136,7 @@ namespace Messenger
                 }
             }
         }
+
         public void CloseApplication(object sender, System.Windows.Forms.MouseEventArgs eventArgs)
         {
             Close();
@@ -107,17 +155,74 @@ namespace Messenger
 
         private void CallToUser(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            // PhoneCallTask phoneCallTask = new PhoneCallTask();
+            //
+            // phoneCallTask.PhoneNumber = "2065550123";
+            ; // phoneCallTask;.DisplayName = "Gage";
+            ; // phoneCallTask;.Show();
         }
 
         private void OpenSmileWindow(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void TakeAPhoto(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+        }
+
+        private void OpenPopupSettings(object sender, MouseButtonEventArgs e)
+        {
+            var transparentBackground = new BrushConverter();
+            PopupSettingsWindow.Visibility = Visibility.Visible;
+            PopupSettings.Visibility = Visibility.Visible;
+        }
+
+        private void HidePopupSettings(object sender, MouseButtonEventArgs e)
+        {
+            var transparentBackground = new BrushConverter();
+            PopupSettingsWindow.Visibility = Visibility.Hidden;
+            PopupSettings.Visibility = Visibility.Hidden;
+        }
+
+        private void OpenSelectedUserData(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedUserData.Margin == new Thickness(0, 0, 0, 0))
+            {
+                ChatField.Margin = new Thickness(0, 0, 0, 0);
+                SelectedUserData.Margin = new Thickness(0, 0, -250, 0);
+                Width -= 250;
+            }
+            else
+            {
+                ChatField.Margin = new Thickness(0, 0, 250, 0);
+                SelectedUserData.Margin = new Thickness(0, 0, 0, 0);
+                Width += 250;
+            }
+        }
+
+        private void CloseSelectedUserData(object sender, RoutedEventArgs e)
+        {
+            Width -= 250;
+            ChatField.Margin = new Thickness(0, 0, 0, 0);
+            SelectedUserData.Margin = new Thickness(0, 0, -250, 0);
+        }
+
+        private void OpenSelectedUserSettings(object sender, RoutedEventArgs e)
+        {
+            if (SelectedUserSettings.Visibility == Visibility.Visible)
+            {
+                SelectedUserSettings.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                SelectedUserSettings.Visibility = Visibility.Visible;
+            }
+        }
+        
+        private void OpenSettings(object sender, RoutedEventArgs e)
+        {
+            PopupSettingsWindow.Visibility = Visibility.Hidden;
+            PopupSettings.Visibility = Visibility.Hidden;
         }
     }
 }

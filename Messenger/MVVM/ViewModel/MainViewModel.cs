@@ -13,16 +13,16 @@ namespace Messenger.MVVM.ViewModel
 {
     class MainViewModel : ObservableObject
     {
-        public ObservableCollection<MessageModel> Messages { get; set; }
+        private DatabaseConnection _databaseConnection = new DatabaseConnection();
+        public static ObservableCollection<MessageModel> Messages { get; set; }
         public ObservableCollection<ContactModel> Contacts { get; set; }
-        
+
         public RelayCommand SendCommand { get; set; }
 
         private ContactModel _selectedContact;
 
         private string _message;
         private static int _secondsElapsedFromThePreviousMessage;
-        private UserModel _currentUser;
 
         public ContactModel SelectedContact
         {
@@ -34,7 +34,7 @@ namespace Messenger.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
-        
+
         public string Message
         {
             get => _message;
@@ -45,21 +45,40 @@ namespace Messenger.MVVM.ViewModel
             }
         }
 
-        public UserModel User
+        private Visibility _visibility;
+        public Visibility Visibility
         {
-            get => _currentUser;
-            set => _currentUser = value;
+            get
+            {
+                return _visibility;
+            }
+            set
+            {
+                _visibility = value;
+                OnPropertyChanged("Visibility");
+            }
         }
-        
+
+        public static UserModel User { get; set; }
+
         public MainViewModel()
         {
             Messages = new ObservableCollection<MessageModel>();
             Contacts = new ObservableCollection<ContactModel>();
 
+            User = _databaseConnection.InitializeUser(MainWindow.PhoneNumber);
+            if (User == null)
+            {
+                MainWindow.IsFirstLaunched = true;
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+            }
+
             Contacts.Add(new ContactModel
             {
                 Username = "Stepa",
                 ImageSource = "https://i.imgur.com/0wkVW.jpg",
+                OnlineStatus = "не в сети",
                 Messages = Messages
             });
 
@@ -67,6 +86,7 @@ namespace Messenger.MVVM.ViewModel
             {
                 Username = "Kirill",
                 ImageSource = "https://i.imgur.com/0wkVW.jpg",
+                OnlineStatus = "в сети",
                 Messages = Messages
             });
 
@@ -74,6 +94,7 @@ namespace Messenger.MVVM.ViewModel
             {
                 Username = "Oleg",
                 ImageSource = "https://i.imgur.com/0wkVW.jpg",
+                OnlineStatus = "был недавно",
                 Messages = Messages
             });
 
@@ -81,9 +102,10 @@ namespace Messenger.MVVM.ViewModel
             {
                 Username = "Vasja",
                 ImageSource = "https://i.imgur.com/0wkVW.jpg",
+                OnlineStatus = "был давно",
                 Messages = Messages
             });
-            
+
             Messages.Add(new MessageModel
             {
                 Username = "Kirill",
@@ -94,7 +116,7 @@ namespace Messenger.MVVM.ViewModel
                 IsNativeOrigin = false,
                 FirstMessage = true,
             });
-
+            
             DateTime dateTime = DateTime.Now;
             SendCommand = new RelayCommand(o =>
             {
@@ -143,6 +165,11 @@ namespace Messenger.MVVM.ViewModel
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             _secondsElapsedFromThePreviousMessage += 1;
+        }
+
+        protected void CheckContact()
+        {
+            Visibility = SelectedContact == null ? Visibility.Hidden : Visibility.Visible;
         }
     }
 }

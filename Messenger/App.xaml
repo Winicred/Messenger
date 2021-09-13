@@ -12,9 +12,12 @@
                 <ResourceDictionary Source="Themes/MessageBox.xaml"/>
                 <ResourceDictionary Source="Themes/SearchBox.xaml"/>
                 <ResourceDictionary Source="Themes/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Themes/FontStyle.xaml"/>
                 <ResourceDictionary Source="Themes/StylishScrollbar.xaml"/>
                 <ResourceDictionary Source="Themes/MessageBoxStyle.xaml"/>
                 <ResourceDictionary Source="Themes/RegistrationNumberInput.xaml"/>
+                <ResourceDictionary Source="Themes/SmsConfirmInput.xaml"/>
+                <ResourceDictionary Source="Themes/ContextMenuStyle.xaml"/>
                 <!--<ResourceDictionary Source="Themes/Themes/LightTheme.xaml"/>
                 <ResourceDictionary Source="Themes/Themes/LightTheme.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>

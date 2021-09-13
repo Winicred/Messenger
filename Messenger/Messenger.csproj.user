@@ -19,10 +19,19 @@
     <Page Update="RegistrationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\ContextMenuStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\FontStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\MessageBoxStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Themes\RegistrationNumberInput.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\SmsConfirmInput.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

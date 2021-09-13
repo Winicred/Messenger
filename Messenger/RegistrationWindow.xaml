@@ -48,7 +48,7 @@
             </Grid>
         </Border>
 
-        <Grid VerticalAlignment="Stretch" Grid.Row="1" x:Name="FirstRegistrationStep">
+        <Grid VerticalAlignment="Stretch" Grid.Row="1" Name="FirstRegistrationStep">
             <Grid.RowDefinitions>
                 <RowDefinition Height="225" />
                 <RowDefinition Height="200" />
@@ -88,25 +88,58 @@
             </StackPanel>
 
             <Grid Grid.Row="2" Margin="0 0 0 1">
-                <Button BorderThickness="0" Style="{StaticResource RegistrationWindowButton}"
-                        Click="NextRegistrationStep">
+                <Button BorderThickness="0" Style="{StaticResource RegistrationWindowButton}">
                     <Button.Content>
                         <TextBlock Text="Начать пользоваться Chatty" />
                     </Button.Content>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 0 0" 
+                                                        To="0 0 800 0" Storyboard.TargetName="FirstRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                    <ThicknessAnimation BeginTime="0" From="800 0 0 0" 
+                                                        To="0 0 0 0" Storyboard.TargetName="SecondRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
                 </Button>
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="1" x:Name="SecondRegistrationStep" Margin="0 0 800 0">
+        <Grid Grid.Row="1" Name="SecondRegistrationStep" Margin="0 0 800 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="192" />
-                <RowDefinition Height="192" />
-                <RowDefinition Height="191"/>
+                <RowDefinition Height="102" />
+                <RowDefinition Height="62" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <TextBlock Text="Добро пожаловать!" TextAlignment="Center" FontSize="28" FontWeight="Medium" Margin="0 30 0 0"/>
-                <TextBlock Text="Номер телефона" TextAlignment="Center" FontSize="24" Margin="0 100 0 0"/>
+                <TextBlock Text="Назад ->" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource RegistrationButtonBack}">
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="TextBlock.MouseUp">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 800 0" 
+                                                        To="0 0 0 0" Storyboard.TargetName="FirstRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 0 0" 
+                                                        To="800 0 0 0" Storyboard.TargetName="SecondRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+                <TextBlock Text="Добро пожаловать в Chatty!" TextAlignment="Center" VerticalAlignment="Center" FontSize="28" FontWeight="Medium"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <TextBlock Text="Номер телефона" TextAlignment="Center" FontSize="22"/>
                 <Separator Margin="150 0 150 0" VerticalAlignment="Bottom" Background="#555">
                     <Separator.Effect>
                         <BlurEffect Radius="3"/>
@@ -114,14 +147,99 @@
                 </Separator>
             </Grid>
 
-            <Grid Grid.Row="1" Background="#aaa">
-                <TextBox Width="275" Height="50" Style="{StaticResource RegistrationNumberInput}"/>
+            <Grid Grid.Row="2" VerticalAlignment="Center">
+                <TextBox x:Name="PhoneNumber" x:FieldModifier="public" Width="275" Height="50"/>
             </Grid>
 
-            <Grid Grid.Row="2" Background="#000">
-                
+            <Grid Grid.Row="3" Background="#aaa">
+                <Button Style="{StaticResource RegisterButton}" Content="Войти в Chatty">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 0 0" 
+                                                        To="0 0 800 0" Storyboard.TargetName="SecondRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                    <ThicknessAnimation BeginTime="0" From="800 0 0 0" 
+                                                        To="0 0 0 0" Storyboard.TargetName="ThirdRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
             </Grid>
         </Grid>
 
+        <Grid Grid.Row="1" Name="ThirdRegistrationStep" Margin="0 0 800 0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <TextBlock Text="Назад ->" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource RegistrationButtonBack}">
+                    <TextBlock.Triggers>
+                        <EventTrigger RoutedEvent="TextBlock.MouseUp">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 800 0" 
+                                                        To="0 0 0 0" Storyboard.TargetName="SecondRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 0 0" 
+                                                        To="800 0 0 0" Storyboard.TargetName="ThirdRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </TextBlock.Triggers>
+                </TextBlock>
+            </Grid>
+            
+            <Grid Grid.Row="1" VerticalAlignment="Center">
+                <TextBox Width="275" Height="50" Style="{StaticResource SmsConfirmInput}"/>
+            </Grid>
+
+            <Grid Grid.Row="2" Background="#aaa">
+                <Button Style="{StaticResource RegisterButton}" Content="Войти в Chatty">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ThicknessAnimation BeginTime="0" From="0 0 0 0" 
+                                                        To="0 0 800 0" Storyboard.TargetName="ThirdRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                    <ThicknessAnimation BeginTime="0" From="800 0 0 0" 
+                                                        To="0 0 0 0" Storyboard.TargetName="FinalRegistrationStep" 
+                                                        Duration="0:0:0.1" Storyboard.TargetProperty="Margin"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Name="FinalRegistrationStep" Margin="0 0 800 0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <TextBlock Text="Назад ->" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource RegistrationButtonBack}"/>
+            </Grid>
+            
+            <Grid Grid.Row="1">
+                <TextBox x:Name="RegistationUsername" x:FieldModifier="public" Width="250" Height="50"/>
+            </Grid>
+            
+            <Grid Grid.Row="2">
+                <Button Style="{StaticResource RegisterButton}" Click="Login" Content="Войти" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+        
     </Grid>
 </Window>
