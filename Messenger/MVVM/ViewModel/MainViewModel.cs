@@ -74,6 +74,8 @@ namespace Messenger.MVVM.ViewModel
                 mainWindow.Show();
             }
 
+            User.ImageSource = "https://i.imgur.com/btaOetV.jpg";
+
             Contacts.Add(new ContactModel
             {
                 Username = "Stepa",

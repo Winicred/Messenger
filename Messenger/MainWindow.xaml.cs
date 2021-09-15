@@ -52,12 +52,14 @@ namespace Messenger
                     MessageFieldGrid.MinWidth = 500;
                 }
 
+                // User's windows
                 PopupSettingsWindow.Visibility = Visibility.Hidden;
                 PopupSettings.Visibility = Visibility.Hidden;
-
                 SelectedUserData.Margin = new Thickness(0, 0, -250, 0);
-
                 SelectedUserSettings.Visibility = Visibility.Hidden;
+                SettingsField.Visibility = Visibility.Hidden;
+                SettingsWindow.Visibility = Visibility.Hidden;
+                PhoneCallWindow.Visibility = Visibility.Hidden;
 
                 Width = Properties.UserProperties.Default.WindowWidthAfterShutdown;
                 Height = Properties.UserProperties.Default.WindowHeightAfterShutdown;
@@ -137,7 +139,7 @@ namespace Messenger
             }
         }
 
-        public void CloseApplication(object sender, System.Windows.Forms.MouseEventArgs eventArgs)
+        public void CloseApplication(object sender, MouseEventArgs eventArgs)
         {
             Close();
             _notifyIcon.DetachIcon();
@@ -148,43 +150,46 @@ namespace Messenger
             Show();
         }
 
-        public void DisableNotifications(object sender, System.Windows.Forms.MouseEventArgs e)
+        public void DisableNotifications(object sender, MouseEventArgs eventArgs)
         {
             throw new NotImplementedException();
         }
 
-        private void CallToUser(object sender, RoutedEventArgs e)
+        private void CallToUser(object sender, RoutedEventArgs eventArgs)
         {
-            // PhoneCallTask phoneCallTask = new PhoneCallTask();
-            //
-            // phoneCallTask.PhoneNumber = "2065550123";
-            ; // phoneCallTask;.DisplayName = "Gage";
-            ; // phoneCallTask;.Show();
+            PhoneCallWindow.Visibility = Visibility.Visible;
+        }
+        
+        private void EndPhoneCall(object sender, RoutedEventArgs eventArgs)
+        {
+            PhoneCallWindow.Visibility = Visibility.Hidden;
         }
 
-        private void OpenSmileWindow(object sender, RoutedEventArgs e)
+        private void OpenSmileWindow(object sender, RoutedEventArgs eventArgs)
         {
+
         }
 
-        private void TakeAPhoto(object sender, RoutedEventArgs e)
+        private void CameraCall(object sender, RoutedEventArgs eventArgs)
         {
+            
         }
 
-        private void OpenPopupSettings(object sender, MouseButtonEventArgs e)
+        private void OpenPopupSettings(object sender, MouseButtonEventArgs eventArgs)
         {
             var transparentBackground = new BrushConverter();
             PopupSettingsWindow.Visibility = Visibility.Visible;
             PopupSettings.Visibility = Visibility.Visible;
         }
 
-        private void HidePopupSettings(object sender, MouseButtonEventArgs e)
+        private void HidePopupSettings(object sender, MouseButtonEventArgs eventArgs)
         {
             var transparentBackground = new BrushConverter();
             PopupSettingsWindow.Visibility = Visibility.Hidden;
             PopupSettings.Visibility = Visibility.Hidden;
         }
 
-        private void OpenSelectedUserData(object sender, MouseButtonEventArgs e)
+        private void OpenSelectedUserData(object sender, MouseButtonEventArgs eventArgs)
         {
             if (SelectedUserData.Margin == new Thickness(0, 0, 0, 0))
             {
@@ -200,14 +205,14 @@ namespace Messenger
             }
         }
 
-        private void CloseSelectedUserData(object sender, RoutedEventArgs e)
+        private void CloseSelectedUserData(object sender, RoutedEventArgs eventArgs)
         {
             Width -= 250;
             ChatField.Margin = new Thickness(0, 0, 0, 0);
             SelectedUserData.Margin = new Thickness(0, 0, -250, 0);
         }
 
-        private void OpenSelectedUserSettings(object sender, RoutedEventArgs e)
+        private void OpenSelectedUserSettings(object sender, RoutedEventArgs eventArgs)
         {
             if (SelectedUserSettings.Visibility == Visibility.Visible)
             {
@@ -219,10 +224,19 @@ namespace Messenger
             }
         }
         
-        private void OpenSettings(object sender, RoutedEventArgs e)
+        private void OpenSettings(object sender, RoutedEventArgs eventArgs)
         {
             PopupSettingsWindow.Visibility = Visibility.Hidden;
             PopupSettings.Visibility = Visibility.Hidden;
+
+            SettingsField.Visibility = Visibility.Visible;
+            SettingsWindow.Visibility = Visibility.Visible;
+        }
+
+        private void CloseSettingsWindow(object sender, RoutedEventArgs eventArgs)
+        {
+            SettingsField.Visibility = Visibility.Hidden;
+            SettingsWindow.Visibility = Visibility.Hidden;
         }
     }
 }
