@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -13,15 +16,28 @@ namespace Messenger
 {
     public partial class MainWindow
     {
-        private static string WindowTitle = @"Messanger";
         public static bool IsFirstLaunched = Properties.UserProperties.Default.IsFirstLaunched;
         public static long PhoneNumber = Properties.UserProperties.Default.LogginedUserPhoneNumber;
+        public string HostName = Dns.GetHostName();
 
         private readonly DatabaseConnection _databaseConnection = new DatabaseConnection();
         private readonly NotifyIconControl _notifyIcon = new NotifyIconControl();
-
+        
         public MainWindow()
         {
+            string localIP = GetMachineData.CurrentIpAddress();
+            ServerConnect serverConnect = new ServerConnect();
+            try
+            {
+                serverConnect.SendMessageFromSocket(11000, "Подключился пользователь (" + HostName + ") с ip-адреса (" + localIP + ")");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+            IsFirstLaunched = false;
+            
             switch (IsFirstLaunched)
             {
                 case true:
@@ -31,13 +47,12 @@ namespace Messenger
                     break;
                 case false:
                     InitializeComponent();
-                    Title = WindowTitle;
                     break;
             }
 
             _databaseConnection.DbConnection();
 
-            if (Application.Current.MainWindow != null)
+            if (Application.Current.MainWindow != null && !IsFirstLaunched)
             {
                 if (Application.Current.MainWindow.WindowState != WindowState.Maximized)
                 {
@@ -237,6 +252,31 @@ namespace Messenger
         {
             SettingsField.Visibility = Visibility.Hidden;
             SettingsWindow.Visibility = Visibility.Hidden;
+        }
+
+        private void BrowsePhoto(object sender, EventArgs eventArgs)
+        {
+            string imageLocation = "";
+
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog
+                {
+                    Filter = "Image files (*.jpg)|*.jpg|All Files (*.*)|*.*"
+                };
+
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    imageLocation = dialog.FileName;
+                    // MainViewModel.User.Images.Add();
+                    
+                    // Сделать доавбление фото 
+                    
+                }
+            } catch (Exception e)
+            {
+                MessageBox.Show("An Error Occured. ERROR message = " + e.Message, "Error", MessageBoxButton.OK);
+            }
         }
     }
 }

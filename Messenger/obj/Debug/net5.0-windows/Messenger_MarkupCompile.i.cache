@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 D:\Coding\C#\Messenger\Messenger\App.xaml
 15-1467184133
 
-18-829561062
+21-1020486644
 2031199186889
 MainWindow.xaml;RegistrationWindow.xaml;Themes\ButtonStyle.xaml;Themes\ChatItem.xaml;Themes\ContactCard.xaml;Themes\ContextMenuStyle.xaml;Themes\FontStyle.xaml;Themes\MessageBox.xaml;Themes\MessageBoxStyle.xaml;Themes\RegistrationNumberInput.xaml;Themes\SearchBox.xaml;Themes\SmsConfirmInput.xaml;Themes\StylishScrollbar.xaml;Themes\Themes\DarkTheme.xaml;Themes\Themes\LightTheme.xaml;
 
-False
+True
 

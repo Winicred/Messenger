@@ -14,6 +14,7 @@ namespace Messenger.MVVM.ViewModel
     class MainViewModel : ObservableObject
     {
         private DatabaseConnection _databaseConnection = new DatabaseConnection();
+        private ServerConnect _serverConnect = new ServerConnect();
         public static ObservableCollection<MessageModel> Messages { get; set; }
         public ObservableCollection<ContactModel> Contacts { get; set; }
 
@@ -45,20 +46,6 @@ namespace Messenger.MVVM.ViewModel
             }
         }
 
-        private Visibility _visibility;
-        public Visibility Visibility
-        {
-            get
-            {
-                return _visibility;
-            }
-            set
-            {
-                _visibility = value;
-                OnPropertyChanged("Visibility");
-            }
-        }
-
         public static UserModel User { get; set; }
 
         public MainViewModel()
@@ -70,7 +57,7 @@ namespace Messenger.MVVM.ViewModel
             if (User == null)
             {
                 MainWindow.IsFirstLaunched = true;
-                MainWindow mainWindow = new MainWindow();
+                var mainWindow = new MainWindow();
                 mainWindow.Show();
             }
 
@@ -118,7 +105,7 @@ namespace Messenger.MVVM.ViewModel
                 IsNativeOrigin = false,
                 FirstMessage = true,
             });
-            
+
             DateTime dateTime = DateTime.Now;
             SendCommand = new RelayCommand(o =>
             {
@@ -149,6 +136,8 @@ namespace Messenger.MVVM.ViewModel
                     }
                 }
 
+                _serverConnect.SendMessageFromSocket(11000, "Пользователь " + User.Username + " отправил сообщение: " + Message);
+                
                 Message = "";
                 _secondsElapsedFromThePreviousMessage = 0;
                 OnPropertyChanged();
@@ -167,11 +156,6 @@ namespace Messenger.MVVM.ViewModel
         private static void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             _secondsElapsedFromThePreviousMessage += 1;
-        }
-
-        protected void CheckContact()
-        {
-            Visibility = SelectedContact == null ? Visibility.Hidden : Visibility.Visible;
         }
     }
 }

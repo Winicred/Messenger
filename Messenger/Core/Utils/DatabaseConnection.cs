@@ -30,6 +30,11 @@ namespace Messenger.Core.Utils
                     {
                         command.ExecuteNonQuery();
                     }
+                    
+                    using (NpgsqlCommand command = new NpgsqlCommand(query, _sqlConnection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
                 catch (NpgsqlException)
                 {
