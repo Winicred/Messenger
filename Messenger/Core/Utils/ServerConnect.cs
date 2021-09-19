@@ -1,46 +1,80 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Threading;
 using Messenger.MVVM.ViewModel;
 
 namespace Messenger.Core.Utils
 {
     internal class ServerConnect
     {
-        public void SendMessageFromSocket(int port, string text)
+        private static string userName;
+        private const string host = "127.0.0.1";
+        private const int port = 8888;
+        private static TcpClient client;
+        private static NetworkStream stream;
+
+        public void ConnectWithTcpServer()
         {
-            // Буфер для входящих данных
-            byte[] bytes = new byte[1024];
+            userName = MainViewModel.User.Username;
+            client = new TcpClient();
+            try
+            {
+                client.Connect(host, port); //подключение клиента
+                stream = client.GetStream(); // получаем поток
+                
+                // string message = userName;
+                // byte[] data = Encoding.Unicode.GetBytes(message);
+                // stream.Write(data, 0, data.Length);
 
-            // Соединяемся с удаленным устройством
-
-            // Устанавливаем удаленную точку для сокета
-            IPHostEntry ipHost = Dns.GetHostEntry("localhost");
-            IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, port);
-
-            Socket sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            // Соединяем сокет с удаленной точкой
-            sender.Connect(ipEndPoint);
-
-            byte[] msg = Encoding.UTF8.GetBytes(text);
-
-            // Отправляем данные через сокет
-            int bytesSent = sender.Send(msg);
-
-            // Получаем ответ от сервера
-            int bytesRec = sender.Receive(bytes);
-            
-            // Освобождаем сокет
-            sender.Shutdown(SocketShutdown.Both);
-            sender.Close();
+                // запускаем новый поток для получения данных
+                Thread receiveThread = new Thread(new ThreadStart(ReceiveMessage));
+                receiveThread.Start(); //старт потока
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
+        // отправка сообщений
+        public void SendMessage(string message)
+        {
+            byte[] data = Encoding.Unicode.GetBytes(message);
+            stream.Write(data, 0, data.Length);
+        }
+
+        // получение сообщений
+        static void ReceiveMessage()
+        {
+            try
+            {
+                byte[] data = new byte[1024]; // буфер для получаемых данных
+                StringBuilder builder = new StringBuilder();
+                int bytes = 0;
+                do
+                {
+                    bytes = stream.Read(data, 0, data.Length);
+                    builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                } while (stream.DataAvailable);
+
+                string message = builder.ToString();
+                Console.WriteLine(message); //вывод сообщения
+            }
+            catch
+            {
+                Console.WriteLine("Подключение прервано!"); //соединение было прервано
+                Disconnect();
+            }
+        }
+
+        static void Disconnect()
+        {
+            if (stream != null)
+                stream.Close(); //отключение потока
+            if (client != null)
+                client.Close(); //отключение клиента
+            Environment.Exit(0); //завершение процесса
+        }
     }
 }

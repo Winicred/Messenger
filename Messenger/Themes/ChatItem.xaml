@@ -32,6 +32,13 @@
                                                HorizontalAlignment="Right" FontSize="10" Margin="0 0 -8 2" />
                                 </StackPanel>
                             </Border>
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="asdasd"/>
+                                    <MenuItem Header="asdasd"/>
+                                    <MenuItem Header="asdasd"/>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
                         </StackPanel>
                     </StackPanel>
                 </ControlTemplate>
@@ -57,6 +64,13 @@
                                            HorizontalAlignment="Right" FontSize="10" Margin="0 0 -8 2" />
                             </StackPanel>
                         </Border>
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="asdasd"/>
+                                <MenuItem Header="asdasd"/>
+                                <MenuItem Header="asdasd"/>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                     </StackPanel>
                 </StackPanel>
             </ControlTemplate>

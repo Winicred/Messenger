@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using Messenger.Core.Utils;
 using Messenger.MVVM.ViewModel;
+using Microsoft.VisualBasic.ApplicationServices;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
@@ -22,22 +27,30 @@ namespace Messenger
 
         private readonly DatabaseConnection _databaseConnection = new DatabaseConnection();
         private readonly NotifyIconControl _notifyIcon = new NotifyIconControl();
-        
+        private readonly ServerConnect _serverConnect = new ServerConnect();
+
         public MainWindow()
         {
-            string localIP = GetMachineData.CurrentIpAddress();
-            ServerConnect serverConnect = new ServerConnect();
+            DataContext = new MainViewModel();
+            
+            string localIp = GetMachineData.CurrentIpAddress();
+
             try
             {
-                serverConnect.SendMessageFromSocket(11000, "Подключился пользователь (" + HostName + ") с ip-адреса (" + localIP + ")");
+                // serverConnect.SendMessage.(11000, "Подключился пользователь (" + HostName + ") с ip-адреса (" + localIp + ")");
+                _serverConnect.ConnectWithTcpServer();
+                _serverConnect.SendMessage("Подключился пользователь (" + HostName + ") с ip-адреса (" + localIp + ")");
+                // if (status == TcpState.Established)
+                // {
+                // }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(e.Message);
             }
-
-            IsFirstLaunched = false;
             
+            Title = "Chatty";
+
             switch (IsFirstLaunched)
             {
                 case true:
@@ -49,7 +62,7 @@ namespace Messenger
                     InitializeComponent();
                     break;
             }
-
+            
             _databaseConnection.DbConnection();
 
             if (Application.Current.MainWindow != null && !IsFirstLaunched)
@@ -66,7 +79,7 @@ namespace Messenger
                     ToNormalWindow.Visibility = Visibility.Visible;
                     MessageFieldGrid.MinWidth = 500;
                 }
-
+                
                 // User's windows
                 PopupSettingsWindow.Visibility = Visibility.Hidden;
                 PopupSettings.Visibility = Visibility.Hidden;
@@ -137,7 +150,7 @@ namespace Messenger
             Close();
         }
 
-        public void OpenWindow(object sender, System.Windows.Forms.MouseEventArgs eventArgs)
+        public void OpenWindow(object sender, MouseEventArgs eventArgs)
         {
             if (eventArgs.Button == MouseButtons.Left)
             {
@@ -174,7 +187,7 @@ namespace Messenger
         {
             PhoneCallWindow.Visibility = Visibility.Visible;
         }
-        
+
         private void EndPhoneCall(object sender, RoutedEventArgs eventArgs)
         {
             PhoneCallWindow.Visibility = Visibility.Hidden;
@@ -192,14 +205,14 @@ namespace Messenger
 
         private void OpenPopupSettings(object sender, MouseButtonEventArgs eventArgs)
         {
-            var transparentBackground = new BrushConverter();
+            var brushConverter = new BrushConverter();
             PopupSettingsWindow.Visibility = Visibility.Visible;
             PopupSettings.Visibility = Visibility.Visible;
         }
 
         private void HidePopupSettings(object sender, MouseButtonEventArgs eventArgs)
         {
-            var transparentBackground = new BrushConverter();
+            var brushConverter = new BrushConverter();
             PopupSettingsWindow.Visibility = Visibility.Hidden;
             PopupSettings.Visibility = Visibility.Hidden;
         }
@@ -238,7 +251,7 @@ namespace Messenger
                 SelectedUserSettings.Visibility = Visibility.Visible;
             }
         }
-        
+
         private void OpenSettings(object sender, RoutedEventArgs eventArgs)
         {
             PopupSettingsWindow.Visibility = Visibility.Hidden;
@@ -277,6 +290,25 @@ namespace Messenger
             {
                 MessageBox.Show("An Error Occured. ERROR message = " + e.Message, "Error", MessageBoxButton.OK);
             }
+        }
+
+        public void ChangeUserOnlineStatus()
+        {
+
+            // if (IsWindowOpen<Window>("MyWindowName"))
+            // {
+            //     serverConnect.SendMessageFromSocket(11000, "Online");
+            // }
+            // else
+            // {
+            //     serverConnect.SendMessageFromSocket(11000, "Offline");
+            // }
+        }
+        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        {
+            return string.IsNullOrEmpty(name)
+               ? Application.Current.Windows.OfType<T>().Any()
+               : Application.Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
         }
     }
 }

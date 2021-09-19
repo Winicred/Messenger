@@ -70,7 +70,7 @@
         </Border>
 
         <Grid Grid.Row="1" x:Name="WorkingArea" Panel.ZIndex="1000">
-            <!-- Popup menus -->
+        <!-- Popup menus -->
             <Grid Panel.ZIndex="1001" Grid.Row="1">
                 <StackPanel Background="#aaa" Width="250" HorizontalAlignment="Left" Orientation="Vertical"
                             x:Name="PopupSettings">
@@ -259,17 +259,17 @@
                     <ColumnDefinition Width="3*" x:Name="MessageFieldGrid" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0">
+                <Grid Grid.Column="0" Background="#232426">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
                         <RowDefinition />
                         <RowDefinition Height="60" />
                     </Grid.RowDefinitions>
 
-                    <TextBox Grid.Row="0" Height="35" Text="Поиск..." Style="{StaticResource SearchBox}" />
+                    <TextBox Grid.Row="0" Height="35" Style="{StaticResource SearchBox}" Text="{Binding ClearSearchTextBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <ListView ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact}"
-                              Background="Transparent" x:Name="ContactsListView"
+                              Background="Transparent"
                               Grid.Row="1" ItemContainerStyle="{StaticResource ContactCard}" BorderThickness="0" />
 
                     <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" Background="#292b2f">
@@ -308,9 +308,9 @@
                         <RowDefinition Height="60" />
                     </Grid.RowDefinitions>
 
-                    <Border>
+                    <Border Background="#232426" Visibility="{Binding VisibilityIfContactSelected, UpdateSourceTrigger=PropertyChanged}">
                         <Grid HorizontalAlignment="Stretch"
-                              Margin="4" x:Name="SelectedUserBar" x:FieldModifier="public" Background="#aaa">
+                              Margin="4" x:Name="SelectedUserBar">
                             <Grid HorizontalAlignment="Left" Cursor="Hand" MouseUp="OpenSelectedUserData">
                                 <Border HorizontalAlignment="Left" CornerRadius="4">
                                     <StackPanel Orientation="Horizontal" Margin="5 0 0 0" VerticalAlignment="Center">
@@ -363,10 +363,8 @@
 
                     <ListView ItemsSource="{Binding SelectedContact.Messages}" Background="#232426" BorderThickness="0"
                               ItemContainerStyle="{StaticResource ChatItem}" Grid.Row="1" x:Name="ChatBox" />
-                    <TextBlock Grid.Row="1" x:Name="EmptyChatBoxMessage" HorizontalAlignment="Center"
-                               x:FieldModifier="public" />
 
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="2" Background="#232426" Visibility="{Binding VisibilityIfContactSelected, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="80" />

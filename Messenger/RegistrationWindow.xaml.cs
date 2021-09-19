@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
@@ -127,7 +128,8 @@ namespace Messenger
             {
                 Username = _username,
                 PhoneNumber = _phoneNumber,
-                Status = "Нет статуса"
+                Status = "Нет статуса",
+                Images = new List<Image>()
             };
 
             MainViewModel.User = _databaseConnection.InitializeUser(_phoneNumber);
