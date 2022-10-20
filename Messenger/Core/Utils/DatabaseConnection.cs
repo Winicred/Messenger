@@ -9,7 +9,7 @@ namespace Messenger.Core.Utils
     internal class DatabaseConnection
     {
         private static string _connectionString =
-            "Host=localhost;Username=postgres;Password=Nittispermus123;Database=Messenger";
+            "Host=<host>;Username=<username>;Password=<password>;Database=<db_name>";
 
         private readonly NpgsqlConnection _sqlConnection = new NpgsqlConnection(_connectionString);
 
